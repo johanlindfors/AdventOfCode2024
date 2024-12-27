@@ -14,7 +14,7 @@ internal class Program
     */
 
     void Run() {
-        var data = File.ReadAllLines("test-data1.txt");
+        var data = File.ReadAllLines("input.txt");
         var rows = data.Length;
         var cols = data[0].Length;
         var grid = new char[cols, rows];
@@ -59,11 +59,12 @@ internal class Program
                y < 1 || y > rows - 2) {
                 return;
             }
-            var result = data[y-1][x-1] == 'M' &&
-                         data[y+1][x-1] == 'M' &&
-                         data[y][x] == 'A' &&
-                         data[y-1][x+1] == 'S' &&
-                         data[y+1][x+1] == 'S' ? 1 : 0;
+            var result = data[y][x] == 'A' &&
+                         ((data[y-1][x-1] == 'M' && data[y+1][x+1] == 'S') ||
+                          (data[y-1][x-1] == 'S' && data[y+1][x+1] == 'M')) &&
+                         ((data[y+1][x-1] == 'M' && data[y-1][x+1] == 'S') ||
+                          (data[y+1][x-1] == 'S' && data[y-1][x+1] == 'M')) 
+                          ? 1 : 0;
             if(result == 1) {
                 grid[x-1, y-1] = 'M';
                 grid[x-1, y+1] = 'M';
